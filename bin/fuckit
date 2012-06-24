@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+if ARGV.empty?
+  puts "usage: fuckit <file>"
+else
+  $file = ARGV[0]
+  ARGV.shift
+  File.open($file) do |f|
+    $code = f.read.lines.to_a
+  end
+end
+
+begin
+  eval($code.join, nil, $file, 1)
+rescue Exception => e
+  origin = e.backtrace.find {|x| x.split(':')[0] == $file }
+  if origin
+    $code.delete_at(origin.split(':')[1].to_i - 1)
+    retry
+  else
+    puts "fuckit: this file is unfuckitable"
+    puts e
+  end
+end
