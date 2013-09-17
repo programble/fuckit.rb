@@ -4,10 +4,7 @@ if ARGV.empty?
   puts "usage: fuckit <file>"
 else
   $file = ARGV[0]
-  ARGV.shift
-  File.open($file) do |f|
-    $code = f.read.lines.to_a
-  end
+  $code = ARGF.readlines
 end
 
 begin
